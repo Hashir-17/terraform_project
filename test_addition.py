@@ -1,6 +1,6 @@
 # test_addition.py
 
-from addition import add
+from addition import add  # Import the add function from addition.py
 
 def test_add():
     assert add(2, 3) == 5
