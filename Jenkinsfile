@@ -19,15 +19,15 @@ pipeline {
                 sh '''
                 # Create a virtual environment using python3
                 python3 -m venv venv
-                
+
                 # Activate the virtual environment using bash
-                source venv/bin/activate
-                
+                bash -c "source venv/bin/activate"
+
                 # Upgrade pip in the virtual environment
-                pip install --upgrade pip
-                
+                bash -c "pip install --upgrade pip"
+
                 # Install pytest in the virtual environment
-                pip install pytest
+                bash -c "pip install pytest"
                 '''
             }
         }
@@ -37,11 +37,10 @@ pipeline {
                 // Run the tests using pytest in the virtual environment
                 sh '''
                 # Activate the virtual environment in bash
-                source venv/bin/activate
-                
-                # Run tests in the 'src' directory
-                cd src  # Assuming your Python files are in the 'src' folder
-                python3 -m pytest test_addition.py  # Run the tests
+                bash -c "source venv/bin/activate"
+
+                # Navigate to the src folder and run tests using pytest
+                bash -c "cd src && python3 -m pytest test_addition.py"
                 '''
             }
         }
@@ -53,7 +52,7 @@ pipeline {
             echo 'Cleaning up environment'
             sh '''
             # Deactivate the virtual environment
-            deactivate
+            bash -c "deactivate"
             '''
         }
 
