@@ -15,11 +15,10 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                // Set up Python environment and install dependencies
+                // Install dependencies globally (no virtual environment)
                 sh '''
-                python3 -m venv venv  # Create virtual environment
-                source venv/bin/activate
-                pip install --upgrade pip
+                # Install pip and pytest globally
+                python3 -m pip install --upgrade pip
                 pip install pytest
                 '''
             }
@@ -40,7 +39,6 @@ pipeline {
         always {
             // Clean up the environment after the build
             echo 'Cleaning up environment'
-            sh 'deactivate'
         }
 
         success {
