@@ -15,12 +15,18 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                // Set up a Python virtual environment and install dependencies
+                // Use Bash to create and activate the virtual environment and install dependencies
                 sh '''
-                # Use bash to create and activate the virtual environment
+                # Create a virtual environment using python3
                 bash -c "python3 -m venv venv"
+                
+                # Activate the virtual environment
                 bash -c "source venv/bin/activate"
+                
+                # Upgrade pip in the virtual environment
                 bash -c "pip install --upgrade pip"
+                
+                # Install pytest in the virtual environment
                 bash -c "pip install pytest"
                 '''
             }
@@ -28,11 +34,13 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Run the tests using pytest
+                // Run the tests using pytest, inside the virtual environment
                 sh '''
-                bash -c "source venv/bin/activate"  # Activate the virtual environment
-                bash -c "cd src"  # Assuming your Python files are in the 'src' folder
-                bash -c "python3 -m pytest test_addition.py"  # Run the tests
+                # Activate the virtual environment in bash
+                bash -c "source venv/bin/activate"
+                
+                # Navigate to the src folder and run tests using pytest
+                bash -c "cd src && python3 -m pytest test_addition.py"
                 '''
             }
         }
@@ -40,9 +48,10 @@ pipeline {
 
     post {
         always {
-            // Clean up the environment after the build
+            // Clean up the environment after the build (deactivate the virtual environment)
             echo 'Cleaning up environment'
             sh '''
+            # Deactivate the virtual environment in bash
             bash -c "deactivate"
             '''
         }
