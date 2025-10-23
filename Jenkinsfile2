@@ -11,17 +11,13 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                // Set up a Python virtual environment and install dependencies
+                // Set up Python virtual environment and install dependencies using bash
                 sh '''
-                # Create a virtual environment using python3
-                python3 -m venv venv
-
-                # Activate the virtual environment and install dependencies
-                source venv/bin/activate
-
-                # Upgrade pip and install pytest
-                pip install --upgrade pip
-                pip install pytest
+                # Use bash to create a virtual environment
+                bash -c "python3 -m venv venv"
+                
+                # Activate the virtual environment using bash
+                bash -c "source venv/bin/activate && pip install --upgrade pip && pip install pytest"
                 '''
             }
         }
@@ -30,9 +26,8 @@ pipeline {
             steps {
                 // Run the tests using pytest in the virtual environment
                 sh '''
-                # Activate the virtual environment and run the tests using pytest
-                source venv/bin/activate
-                pytest test_addition.py  # Replace with the path to your test file
+                # Activate the virtual environment and run the tests using bash
+                bash -c "source venv/bin/activate && cd src && python3 -m pytest test_addition.py"
                 '''
             }
         }
@@ -43,8 +38,8 @@ pipeline {
             // Clean up the environment after the build (deactivate the virtual environment)
             echo 'Cleaning up environment'
             sh '''
-            # Deactivate the virtual environment
-            deactivate
+            # Deactivate the virtual environment using bash
+            bash -c "source venv/bin/activate && deactivate"
             '''
         }
 
