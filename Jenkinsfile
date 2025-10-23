@@ -15,10 +15,12 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                // Install dependencies globally (no virtual environment)
+                // Set up a Python virtual environment and install dependencies
                 sh '''
-                # Install pip and pytest globally
-                python3 -m pip install --upgrade pip
+                # Create a virtual environment
+                python3 -m venv venv
+                source venv/bin/activate  # Activate the virtual environment
+                pip install --upgrade pip
                 pip install pytest
                 '''
             }
@@ -28,6 +30,7 @@ pipeline {
             steps {
                 // Run the tests using pytest
                 sh '''
+                source venv/bin/activate  # Activate the virtual environment
                 cd src  # Assuming your Python files are in the 'src' folder
                 python3 -m pytest test_addition.py  # Run the tests
                 '''
@@ -39,6 +42,7 @@ pipeline {
         always {
             // Clean up the environment after the build
             echo 'Cleaning up environment'
+            sh 'deactivate'  # Deactivate the virtual environment
         }
 
         success {
