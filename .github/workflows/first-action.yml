@@ -12,6 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -24,5 +25,6 @@ jobs:
 
     - name: Run tests
       run: |
-        cd src
-        python -m pytest addition.py
+        cd src  # If you put your files in the 'src' folder
+        python -m pytest test_addition.py  # Adjust the filename if needed
+
