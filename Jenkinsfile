@@ -42,7 +42,10 @@ pipeline {
         always {
             // Clean up the environment after the build
             echo 'Cleaning up environment'
-            sh 'deactivate'  # Deactivate the virtual environment
+            sh '''
+            # Deactivate the virtual environment
+            deactivate
+            '''
         }
 
         success {
