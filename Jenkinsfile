@@ -15,32 +15,33 @@ pipeline {
 
         stage('Set Up Python Environment') {
             steps {
-                // Use Bash to create and activate the virtual environment and install dependencies
+                // Set up a Python virtual environment and install dependencies
                 sh '''
                 # Create a virtual environment using python3
-                bash -c "python3 -m venv venv"
+                python3 -m venv venv
                 
-                # Activate the virtual environment
-                bash -c "source venv/bin/activate"
+                # Activate the virtual environment using bash
+                source venv/bin/activate
                 
                 # Upgrade pip in the virtual environment
-                bash -c "pip install --upgrade pip"
+                pip install --upgrade pip
                 
                 # Install pytest in the virtual environment
-                bash -c "pip install pytest"
+                pip install pytest
                 '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run the tests using pytest, inside the virtual environment
+                // Run the tests using pytest in the virtual environment
                 sh '''
                 # Activate the virtual environment in bash
-                bash -c "source venv/bin/activate"
+                source venv/bin/activate
                 
-                # Navigate to the src folder and run tests using pytest
-                bash -c "cd src && python3 -m pytest test_addition.py"
+                # Run tests in the 'src' directory
+                cd src  # Assuming your Python files are in the 'src' folder
+                python3 -m pytest test_addition.py  # Run the tests
                 '''
             }
         }
@@ -51,8 +52,8 @@ pipeline {
             // Clean up the environment after the build (deactivate the virtual environment)
             echo 'Cleaning up environment'
             sh '''
-            # Deactivate the virtual environment in bash
-            bash -c "deactivate"
+            # Deactivate the virtual environment
+            deactivate
             '''
         }
 
